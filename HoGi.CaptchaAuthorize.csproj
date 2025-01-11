@@ -11,7 +11,7 @@
 update and improvement of loose-coupling</Description>
     <PackageIcon>HoGi_Logo128.png</PackageIcon>
     <PackageTags>captcha; authorization;</PackageTags>
-    <PackAsTool>True</PackAsTool>
+    <PackAsTool>False</PackAsTool>
     <IncludeSymbols>False</IncludeSymbols>
     <Nullable>disable</Nullable>
     <Copyright>Hossein Giyah</Copyright>

@@ -4,7 +4,7 @@ A library in .NET web applications for generating and validating CAPTCHAs in a s
 it's help you to easy configure and use captcha.
 
 ## Usage
-1. Service DI
+### Service DI
 > [!TIP]
 > for in memory cache service
 >```builder.Services.AddMemoryCache();```
@@ -16,4 +16,32 @@ it's help you to easy configure and use captcha.
 ```sh
     //set AddFundProCaptcha(true) for using distribute cache
     builder.Services.AddHoGiCaptcha(true);
+```
+### Example Get Captcha
+```sh
+ [HttpGet]
+ [ProducesResponseType(typeof(CaptchaResult), StatusCodes.Status200OK)]
+ public IActionResult Get([FromServices] CaptchaService service)
+ {
+     return Ok(service.GenerateCaptcha());
+ }
+```
+distribute cache support
+``` sh
+[HttpGet]
+[ProducesResponseType(typeof(CaptchaResult), StatusCodes.Status200OK)]
+public IActionResult Get([FromServices] DistributeCaptchaService service)
+{
+    return Ok(service.GenerateCaptcha());
+}
+```
+### Example Validating Captcha
+```sh
+ [HttpPost]
+ [ServiceFilter(typeof(CaptchaFilter), Order = 1)]
+ public IActionResult Post([FromBody] Model model)
+ {
+    //do something(model);
+    return Ok());
+ }
 ```

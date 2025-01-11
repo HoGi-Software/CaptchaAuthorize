@@ -8,7 +8,7 @@ namespace HoGi.CaptchaAuthorize.DI;
 
 public static class CaptchaAuthorizeDIExtension
 {
-    public static IServiceCollection AddFundProCaptcha(this IServiceCollection services, bool useDistributeCache)
+    public static IServiceCollection AddHoGiCaptcha(this IServiceCollection services, bool useDistributeCache)
     {
         if (services == null)
         {

@@ -7,7 +7,8 @@
     <Title>HoGi.CaptchaAuthorize</Title>
     <Company>HoGi</Company>
     <Authors>Hossein Giyah</Authors>
-    <Description>all you need for create and validate captcha</Description>
+    <Description>all you need for create and validate captcha,
+update and improvement of loose-coupling</Description>
     <PackageIcon>HoGi_Logo128.png</PackageIcon>
     <PackageTags>captcha; authorization;</PackageTags>
     <PackAsTool>True</PackAsTool>
@@ -17,6 +18,12 @@
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageReleaseNotes>.Net Core Captcha Component</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/HoGi-Software/CaptchaAuthorize</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/HoGi-Software/CaptchaAuthorize</PackageProjectUrl>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,10 +35,13 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="Services\CaptchaBuilder.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HoGi.ToolsAndExtensions" Version="1.0.2" />
+    <PackageReference Include="HoGi.Commons.Interfaces" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.10" />
   </ItemGroup>
 

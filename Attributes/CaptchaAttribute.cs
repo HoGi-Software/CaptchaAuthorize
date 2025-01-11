@@ -1,27 +1,32 @@
-﻿using System;
+﻿using HoGi.CaptchaAuthorize.Interfaces;
+using HoGi.CaptchaAuthorize.Services;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System;
 using System.Linq;
 using System.Reflection;
 using HoGi.CaptchaAuthorize.Exceptions;
-using HoGi.CaptchaAuthorize.Interfaces;
-using HoGi.CaptchaAuthorize.Services;
-using HoGi.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HoGi.CaptchaAuthorize.Attributes;
 
-public class CaptchaFilter : IActionFilter
+public abstract class CaptchaFilter : IActionFilter
 {
+    private readonly bool _distributeCacheEnable;
 
-    public void OnActionExecuted(ActionExecutedContext context)
+    protected CaptchaFilter(bool distributeCacheEnable)
+    {
+        _distributeCacheEnable = distributeCacheEnable;
+    }
+
+    public virtual void OnActionExecuted(ActionExecutedContext context)
     {
 
     }
 
-    public void OnActionExecuting(ActionExecutingContext context)
+    public virtual void OnActionExecuting(ActionExecutingContext context)
     {
-        var badResult = new BadRequestObjectResult(new AggregateException<HoGiException>() { Errors = { new InvalidCaptchaException() } });
+        var badResult = new BadRequestObjectResult(new InvalidCaptchaException());
         try
         {
 
@@ -41,17 +46,11 @@ public class CaptchaFilter : IActionFilter
             if (captcha is null || string.IsNullOrEmpty(captcha.CaptchaCode) || string.IsNullOrEmpty(captcha.Hash))
                 context.Result = badResult;
 
-            try
-            {
-                var captchaService = context.HttpContext.RequestServices.GetRequiredService<DistributeCaptchaService>();
-                captchaService.Validate(captcha);
-            }
-            catch (Exception)
-            {
-                //var captchaService = context.HttpContext.RequestServices.GetRequiredService<CaptchaService>();
-                //captchaService.Validate(captcha);
-            }
+            var captchaService = (_distributeCacheEnable
+                ?(ICaptchaService) context.HttpContext.RequestServices.GetRequiredService<DistributeCaptchaService>()
+                : context.HttpContext.RequestServices.GetRequiredService<CaptchaService>());
 
+            captchaService.Validate(captcha);
         }
         catch (Exception ex)
         {

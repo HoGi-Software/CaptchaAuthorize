@@ -1,17 +1,16 @@
-﻿using System;
+﻿using HoGi.CaptchaAuthorize.Extensions;
+using HoGi.CaptchaAuthorize.Models;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using HoGi.CaptchaAuthorize.Extensions;
-using HoGi.CaptchaAuthorize.Models;
-using HoGi.ToolsAndExtensions.Extensions;
 
 namespace HoGi.CaptchaAuthorize.Services;
 
-public static class CaptchaFactory
+public static class CaptchaBuilder
 {
     private static string _letters = "1234567890";
         
@@ -25,7 +24,7 @@ public static class CaptchaFactory
         var captcha = new Captcha
         {
             Salt = salt,
-            Hash = captchaCode.Sha256(salt)
+            Hash = captchaCode.Sha256ForCaptcha(salt)
         };
             
         return captcha;

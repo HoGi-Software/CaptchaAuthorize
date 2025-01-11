@@ -1,25 +1,24 @@
-﻿using System;
+﻿using HoGi.CaptchaAuthorize.Exceptions;
+using HoGi.CaptchaAuthorize.Interfaces;
+using HoGi.CaptchaAuthorize.Models;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using HoGi.CaptchaAuthorize.Interfaces;
-using HoGi.CaptchaAuthorize.Models;
-using HoGi.Shared.Exceptions;
-using HoGi.ToolsAndExtensions.Extensions;
 
 namespace HoGi.CaptchaAuthorize.Services;
 
-public class CaptchaService
+public class CaptchaService: ICaptchaService
 {
     private static readonly ConcurrentDictionary<string, DateTime> ActiveCaptcha = new ConcurrentDictionary<string, DateTime>();
 
     public virtual CaptchaResult GenerateCaptcha(int width = 120, int height = 40)
     {
 
-        var captcha = CaptchaFactory.Create();
+        var captcha = CaptchaBuilder.Create();
 
-        var captchaImage = CaptchaFactory.GenerateImage(captcha);
+        var captchaImage = CaptchaBuilder.GenerateImage(captcha);
 
         ActiveCaptcha.TryAdd(captcha.Hash, DateTime.Now.AddMinutes(2));
         return new CaptchaResult
@@ -33,9 +32,9 @@ public class CaptchaService
     public virtual CaptchaResult GenerateCaptcha(string letters, int width = 120, int height = 40)
     {
 
-        var captcha = CaptchaFactory.Create(letters);
+        var captcha = CaptchaBuilder.Create(letters);
 
-        var captchaImage = CaptchaFactory.GenerateImage(captcha);
+        var captchaImage = CaptchaBuilder.GenerateImage(captcha);
 
         ActiveCaptcha.TryAdd(captcha.Hash, DateTime.Now.AddMinutes(2));
         return new CaptchaResult
@@ -49,16 +48,16 @@ public class CaptchaService
     public virtual void Validate(ICaptcha captcha)
     {
 
-        if (captcha == null) throw new GeneralException("عبارت امنیتی منقضی یا نامعتبر می باشد.");
+        if (captcha == null) throw new InvalidCaptchaException();
 
         if (ActiveCaptcha.TryRemove(captcha.Hash, out var expireTime))
         {
                 
-            if (DateTime.Now > expireTime) throw new GeneralException("عبارت امنیتی منقضی یا نامعتبر می باشد.");
+            if (DateTime.Now > expireTime) throw new InvalidCaptchaException();
         }
         else
         {
-            throw new GeneralException("عبارت امنیتی منقضی یا نامعتبر می باشد.");
+            throw new InvalidCaptchaException();
         }
 
         using var sha256 = SHA256.Create();
@@ -66,7 +65,7 @@ public class CaptchaService
         var splitHash = captcha.Hash.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
             
         var saltedValue = Encoding.UTF8
-            .GetBytes(captcha.CaptchaCode.Safe())
+            .GetBytes(captcha.CaptchaCode)
             .Concat(Encoding.UTF8.GetBytes(captcha.Salt))
             .ToArray();
 
@@ -81,7 +80,7 @@ public class CaptchaService
         var result = BitConverter.ToString(thirdHashedBytes) == splitHash[1];
 
         if (!result)
-            throw new GeneralException("عبارت امنیتی منقضی یا نامعتبر می باشد.");
+            throw new InvalidCaptchaException();
 
     }
 

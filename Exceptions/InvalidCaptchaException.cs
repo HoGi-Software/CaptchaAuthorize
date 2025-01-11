@@ -1,11 +1,15 @@
-﻿using HoGi.Shared.Exceptions;
+﻿using System;
 
 namespace HoGi.CaptchaAuthorize.Exceptions;
 
-public class InvalidCaptchaException:HoGiException
+public class InvalidCaptchaException:Exception
 {
-    public InvalidCaptchaException():base(-1,"کپچا نا معتبر است.")
+    public InvalidCaptchaException():base("Captcha is Invalid or Expired. ")
     {
             
+    }
+    public InvalidCaptchaException(string message) : base(message)
+    {
+
     }
 }

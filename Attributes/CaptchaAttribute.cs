@@ -10,11 +10,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HoGi.CaptchaAuthorize.Attributes;
 
-public abstract class CaptchaFilter : IActionFilter
+public  class CaptchaFilter : IActionFilter
 {
     private readonly bool _distributeCacheEnable;
 
-    protected CaptchaFilter(bool distributeCacheEnable)
+    public CaptchaFilter()
+    {
+        _distributeCacheEnable = false;
+    }
+    public CaptchaFilter(bool distributeCacheEnable=false)
     {
         _distributeCacheEnable = distributeCacheEnable;
     }

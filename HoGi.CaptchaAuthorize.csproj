@@ -8,7 +8,7 @@
     <Company>HoGi</Company>
     <Authors>Hossein Giyah</Authors>
     <Description>all you need for create and validate captcha,
-update and improvement of loose-coupling</Description>
+fix CaptchaFilter </Description>
     <PackageIcon>HoGi_Logo128.png</PackageIcon>
     <PackageTags>captcha; authorization;</PackageTags>
     <PackAsTool>False</PackAsTool>
@@ -21,9 +21,9 @@ update and improvement of loose-coupling</Description>
     <RepositoryUrl>https://github.com/HoGi-Software/CaptchaAuthorize</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/HoGi-Software/CaptchaAuthorize</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.3</AssemblyVersion>
-    <FileVersion>1.0.0.3</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>

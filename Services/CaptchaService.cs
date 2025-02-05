@@ -6,13 +6,23 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Options;
+using HoGi.CaptchaAuthorize.Models.Configurations;
 
 namespace HoGi.CaptchaAuthorize.Services;
 
 public class CaptchaService: ICaptchaService
 {
     private static readonly ConcurrentDictionary<string, DateTime> ActiveCaptcha = new ConcurrentDictionary<string, DateTime>();
+   // private readonly IOptions<CaptchaSetting> _setting;
 
+    //public CaptchaService(IOptions<CaptchaSetting> setting)
+    //{
+    // //   _setting = setting;
+      
+    //}
+
+    [Obsolete]
     public virtual CaptchaResult GenerateCaptcha(int width = 120, int height = 40)
     {
 
@@ -29,6 +39,7 @@ public class CaptchaService: ICaptchaService
         };
 
     }
+    [Obsolete]
     public virtual CaptchaResult GenerateCaptcha(string letters, int width = 120, int height = 40)
     {
 
@@ -45,6 +56,25 @@ public class CaptchaService: ICaptchaService
         };
 
     }
+    public virtual CaptchaResult GenerateCaptcha(ICaptchaConfiguration configuration)
+    {
+        
+        var captcha = CaptchaBuilder.Create(configuration.Letters);
+
+        var captchaImage = CaptchaBuilder.GenerateImage(captcha, configuration.Width, configuration.Height, configuration.FontSize);
+
+        ActiveCaptcha.TryAdd(captcha.Hash, DateTime.Now.AddMinutes(configuration.DurationInMinute));
+        return new CaptchaResult
+        {
+            CaptchaByteData = captchaImage,
+            HashedCaptcha = captcha.Hash,
+            Salt = captcha.Salt
+        };
+
+    }
+
+
+
     public virtual void Validate(ICaptcha captcha)
     {
 

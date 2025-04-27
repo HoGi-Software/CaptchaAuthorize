@@ -24,7 +24,8 @@ public static class CaptchaBuilder
         var captcha = new Captcha
         {
             Salt = salt,
-            Hash = captchaCode.Sha256ForCaptcha(salt)
+            Hash = captchaCode.Sha256ForCaptcha(salt),
+            CaptchaCode = captchaCode,
         };
             
         return captcha;
@@ -40,7 +41,8 @@ public static class CaptchaBuilder
         var captcha = new Captcha
         {
             Salt = salt,
-            Hash = captchaCode.Sha256ForCaptcha(salt)
+            Hash = captchaCode.Sha256ForCaptcha(salt),
+            CaptchaCode = captchaCode,
         };
 
         return captcha;
@@ -71,9 +73,13 @@ public static class CaptchaBuilder
 
         graphics.FillRectangle(hatchBrush, 0, 0, width, height);
 
-        var font = new Font(SystemFonts.DialogFont.FontFamily, fontSize);
-
-        graphics.DrawString(captcha.CaptchaCode, font, new SolidBrush(Color.DimGray), new PointF(random.Next(0, 10), random.Next(0, 5)));
+        var font = new Font(SystemFonts.DefaultFont.FontFamily, fontSize);
+        var gfx = Graphics.FromImage(new Bitmap(1, 1));
+        
+        var size = gfx.MeasureString(captcha.CaptchaCode, font);
+        Console.WriteLine(captcha.CaptchaCode);
+       graphics.DrawString(captcha.CaptchaCode, font, new SolidBrush(Color.DimGray), new PointF(random.Next((int)((width - size.Width) * 0.45), (int)((width - size.Width) * 0.5)),
+            random.Next((int)((height - size.Height) * 0.45), (int)((height - size.Height) * 0.5))));
 
         using var memoryStream = new MemoryStream();
 

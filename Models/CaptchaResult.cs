@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace HoGi.CaptchaAuthorize.Models;
 
 public class CaptchaResult
 {
-    [IgnoreDataMember]
+    [Newtonsoft.Json.JsonIgnore]
+    [JsonIgnore]
     public byte[] CaptchaByteData { get; set; }
     public string CaptchaBase64Data => Convert.ToBase64String(CaptchaByteData);
 

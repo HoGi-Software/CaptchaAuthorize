@@ -14,7 +14,7 @@ it's help you to easy configure and use captcha.
 > for redis as distribute cache service
 >```builder.Services.AddStackExchangeRedisCache(option =>{ option.Configuration = "uri"; option.InstanceName = "instanceName";});```
 ```sh
-    //set AddFundProCaptcha(true) for using distribute cache
+    //set AddHoGiCaptcha(true) for using distribute cache
     builder.Services.AddHoGiCaptcha(true);
 ```
 ### Example Get Captcha

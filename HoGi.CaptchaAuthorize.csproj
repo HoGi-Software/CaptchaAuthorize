@@ -21,9 +21,9 @@ fix CaptchaFilter </Description>
     <RepositoryUrl>https://github.com/HoGi-Software/CaptchaAuthorize</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/HoGi-Software/CaptchaAuthorize</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.8</AssemblyVersion>
-    <FileVersion>1.0.0.8</FileVersion>
-    <Version>1.0.7</Version>
+    <AssemblyVersion>1.0.0.9</AssemblyVersion>
+    <FileVersion>1.0.0.9</FileVersion>
+    <Version>1.0.9</Version>
   </PropertyGroup>
 
   <ItemGroup>

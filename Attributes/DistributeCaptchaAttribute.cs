@@ -10,9 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HoGi.CaptchaAuthorize.Attributes;
 
-public  class CaptchaFilter : IActionFilter
+public  class DistributeCaptchaFilter : IActionFilter
 {
-    
+  
     public virtual void OnActionExecuted(ActionExecutedContext context)
     {
 
@@ -40,7 +40,7 @@ public  class CaptchaFilter : IActionFilter
             if (captcha is null || string.IsNullOrEmpty(captcha.CaptchaCode) || string.IsNullOrEmpty(captcha.Hash))
                 context.Result = badResult;
 
-            var captchaService =context.HttpContext.RequestServices.GetRequiredService<CaptchaService>();
+            var captchaService =  context.HttpContext.RequestServices.GetRequiredService<DistributeCaptchaService>();
 
             captchaService.Validate(captcha);
         }

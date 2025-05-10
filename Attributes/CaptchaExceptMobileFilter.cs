@@ -4,14 +4,6 @@ namespace HoGi.CaptchaAuthorize.Attributes;
 
 public class CaptchaExceptMobileFilter : CaptchaFilter
 {
-    public CaptchaExceptMobileFilter():base()
-    {
-        
-    }
-    public CaptchaExceptMobileFilter(bool distributeCacheEnable=false) :base(distributeCacheEnable)
-    {
-        
-    }
 
     public override void OnActionExecuting(ActionExecutingContext context)
     {

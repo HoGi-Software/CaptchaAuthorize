@@ -13,14 +13,14 @@ public class CaptchaService: ICaptchaService
 {
     private static readonly ConcurrentDictionary<string, DateTime> ActiveCaptcha = new ConcurrentDictionary<string, DateTime>();
 
-    public virtual CaptchaResult GenerateCaptcha(int width = 120, int height = 40)
+    public virtual CaptchaResult GenerateCaptcha(int width = 120, int height = 40, int expireInMinutes = 2)
     {
 
         var captcha = CaptchaBuilder.Create();
 
         var captchaImage = CaptchaBuilder.GenerateImage(captcha);
 
-        ActiveCaptcha.TryAdd(captcha.Hash, DateTime.Now.AddMinutes(2));
+        ActiveCaptcha.TryAdd(captcha.Hash, DateTime.Now.AddMinutes(expireInMinutes));
         return new CaptchaResult
         {
             CaptchaByteData = captchaImage,
@@ -29,14 +29,14 @@ public class CaptchaService: ICaptchaService
         };
 
     }
-    public virtual CaptchaResult GenerateCaptcha(string letters, int width = 120, int height = 40)
+    public virtual CaptchaResult GenerateCaptcha(string letters, int width = 120, int height = 40, int expireInMinutes = 2)
     {
 
         var captcha = CaptchaBuilder.Create(letters);
 
         var captchaImage = CaptchaBuilder.GenerateImage(captcha);
 
-        ActiveCaptcha.TryAdd(captcha.Hash, DateTime.Now.AddMinutes(2));
+        ActiveCaptcha.TryAdd(captcha.Hash, DateTime.Now.AddMinutes(expireInMinutes));
         return new CaptchaResult
         {
             CaptchaByteData = captchaImage,
@@ -77,7 +77,7 @@ public class CaptchaService: ICaptchaService
         var thirdHashedBytes = sha256.ComputeHash(secondHashedBytes);
 
         // Get the hashed string.  
-        var result = BitConverter.ToString(thirdHashedBytes) == splitHash[1];
+        var result = BitConverter.ToString(thirdHashedBytes) == splitHash[3];
 
         if (!result)
             throw new InvalidCaptchaException();

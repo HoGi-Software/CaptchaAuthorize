@@ -25,14 +25,18 @@ public  class DistributeCaptchaFilter : IActionFilter
         {
 
             var model = context.ActionArguments
-                .Select(s => s.Value)
-                .FirstOrDefault(x => x.GetType()
-                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Any(y => y.PropertyType.GetInterface(nameof(ICaptcha)) is not null));
-                
+                            .Select(s => s.Value)
+                            .FirstOrDefault(x => x.GetType().GetInterface(nameof(ICaptcha)) is not null) ??
+
+                        context.ActionArguments
+                            .Select(s => s.Value)
+                            .FirstOrDefault(x => x.GetType()
+                                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                .Any(y => y.PropertyType.GetInterface(nameof(ICaptcha)) is not null));
 
 
-            var captcha = (model?.GetType()
+
+            var captcha = model is ICaptcha captchaModel ? captchaModel : (model?.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .FirstOrDefault(x => x.PropertyType.GetInterface(nameof(ICaptcha)) is not null)?
                 .GetValue(model)) as ICaptcha;
@@ -40,7 +44,7 @@ public  class DistributeCaptchaFilter : IActionFilter
             if (captcha is null || string.IsNullOrEmpty(captcha.CaptchaCode) || string.IsNullOrEmpty(captcha.Hash))
                 context.Result = badResult;
 
-            var captchaService =  context.HttpContext.RequestServices.GetRequiredService<DistributeCaptchaService>();
+            var captchaService = context.HttpContext.RequestServices.GetRequiredService<DistributeCaptchaService>();
 
             captchaService.Validate(captcha);
         }

@@ -23,7 +23,7 @@ fix CaptchaFilter </Description>
     <PackageProjectUrl>https://github.com/HoGi-Software/CaptchaAuthorize</PackageProjectUrl>
     <AssemblyVersion>1.0.0.9</AssemblyVersion>
     <FileVersion>1.0.0.9</FileVersion>
-    <Version>1.0.9</Version>
+    <Version>1.0.9.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,9 +39,10 @@ fix CaptchaFilter </Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HoGi.Commons.Interfaces" Version="1.0.0" />
+    <PackageReference Include="HoGi.Commons.Interfaces" Version="1.0.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.10" />
   </ItemGroup>
 

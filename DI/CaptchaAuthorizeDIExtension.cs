@@ -23,6 +23,7 @@ public static class CaptchaAuthorizeDIExtension
 
 
         services.TryAdd(ServiceDescriptor.Singleton<CaptchaFilter, CaptchaFilter>());
+        services.TryAdd(ServiceDescriptor.Singleton<DistributeCaptchaFilter, DistributeCaptchaFilter>());
 
         services.TryAdd(ServiceDescriptor.Singleton<CaptchaExceptMobileFilter, CaptchaExceptMobileFilter>());
 
